@@ -64,11 +64,16 @@ function searchBandsInTown(bandName) {
 
 function searchSpotify(songName) {
     
+    //check search string
+    if (songName === "") {
+        songName = "The Sign";
+    }
+
     //set up spotify
     var spotify = new Spotify(keys.spotify);
 
     //run search
-    spotify.search({type: "track", query: songName, limit: 1})
+    spotify.search({type: "track", query: songName})
     .then(function(results) {
         
         //check for results
@@ -79,7 +84,7 @@ function searchSpotify(songName) {
             var album = parseAlbum(items[0]);
             
             //output data
-            console.log("Song Name: " + album.song);
+            console.log("\nSong Name: " + album.song);
             console.log("Artist(s): " + album.artists);
             console.log("Album: " + album.album);
             console.log("Preview URL: " + album.previewURL);
