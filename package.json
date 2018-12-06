@@ -1,0 +1,25 @@
+{
+  "name": "liri",
+  "version": "1.0.0",
+  "description": "A media metadata server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kit-foxboy/liri-node-app.git"
+  },
+  "author": "Geoff Lambert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kit-foxboy/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/kit-foxboy/liri-node-app#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "moment": "^2.22.2",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.88.0"
+  }
+}

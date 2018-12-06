@@ -1,0 +1,2 @@
+//dependencies
+require("dotenv").config();
