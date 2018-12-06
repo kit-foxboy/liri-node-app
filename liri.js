@@ -25,6 +25,10 @@ function main() {
             searchSpotify(searchString);
             break;
 
+        case "movie-this":
+            searchOMDB(searchString);
+            break;
+
         default:
             console.log("Invalid command");
     }
@@ -98,6 +102,42 @@ function searchSpotify(songName) {
     });
 }
 
+function searchOMDB(movieName) {
+
+    //check search string
+    if (movieName === "") {
+        movieName = "Mr. Nobody";
+    }
+
+    //make http request
+    request("http://www.omdbapi.com/?apikey=trilogy&t=" + encodeURI(movieName), function(err, response, body) {
+
+        //handle error
+        if (err) {
+            console.log("An error occurred", err);
+            return;
+        }
+
+        //get data
+        var data = JSON.parse(body);
+        if (data.Error) {
+            console.log("No results found");
+            return;
+        }
+        var ratings = parseRatings(data.Ratings);
+
+        //display data
+        console.log("\nTitle: " + data.Title);
+        console.log("Release Year: " + data.Year);
+        console.log("IMDB Rating: " + ratings["Internet Movie Database"]);
+        console.log("Rotten Tomatoes Rating: " + ratings["Rotten Tomatoes"]);
+        console.log("Countries Produced In: " + data.Country);
+        console.log("Language: " + data.Language);
+        console.log("Plot: " + data.Plot);
+        console.log("Actors: " + data.Actors);
+    });
+}
+
 function parseEvent(data) {
 
     var location = data.venue.city;
@@ -125,4 +165,14 @@ function parseAlbum(data) {
         artists: artists.join(", "),
         previewURL: previewURL
     }
+}
+
+function parseRatings(data) {
+
+    var ratings = {};
+    for(var i = 0; i < data.length; i++) {
+        ratings[data[i].Source] = data[i].Value;
+    }
+
+    return ratings;
 }
