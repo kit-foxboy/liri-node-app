@@ -1,5 +1,6 @@
 //dependencies
 require("dotenv").config();
+var fs = require("fs");
 var request = require("request");
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
@@ -14,8 +15,21 @@ function main() {
     var args = process.argv.splice(2);
     var searchString = args.splice(1).join(" ");
 
+    //run main command
+    runCommand(args[0], searchString);
+}
+
+function runCommand(command, searchString) {
+
+    //log command
+    fs.appendFile("log.txt", "\n" + command + ": " + searchString, function(err) {
+        if (err) {
+            console.log("An error has occurred.", err);
+        }
+    });
+
     //run command
-    switch(args[0]) {
+    switch(command) {
 
         case "concert-this":
             searchBandsInTown(searchString);
@@ -27,6 +41,10 @@ function main() {
 
         case "movie-this":
             searchOMDB(searchString);
+            break;
+
+        case "do-what-it-says":
+            searchFromFile();
             break;
 
         default:
@@ -135,6 +153,22 @@ function searchOMDB(movieName) {
         console.log("Language: " + data.Language);
         console.log("Plot: " + data.Plot);
         console.log("Actors: " + data.Actors);
+    });
+}
+
+function searchFromFile() {
+
+    //read file
+    fs.readFile("random.txt", function(err, data) {
+        
+        //handle errors
+        if (err) {
+            console.log("An error has occurred", err);
+            return;
+        }
+
+        var input = data.toString().split(',');
+        runCommand(input[0], input[1].replace("\"", ""));
     });
 }
 
